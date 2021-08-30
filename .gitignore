@@ -1,0 +1,5 @@
+#configuration
+/Application/Config/*
+#IDE artefacts
+.vscode/*
+.idea/*

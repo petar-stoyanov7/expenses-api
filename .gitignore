@@ -1,5 +1,5 @@
 #configuration
-/Application/Config/*
+/Application/Config/config.json
 #IDE artefacts
 .vscode/*
 .idea/*

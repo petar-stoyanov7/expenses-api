@@ -4,15 +4,17 @@ namespace Core;
 use Application\Models\CarModel;
 use Application\Models\ExpenseModel;
 use Application\Models\PartsModel;
+use Application\Models\StatisticsModel;
 use Application\Models\UserModel;
 
 abstract class Controller
 {
     private $hash;
-    public $CarModel;
-    public $UserModel;
-    public $ExpenseModel;
-    public $PartsModel;
+    public CarModel $CarModel;
+    public UserModel $UserModel;
+    public ExpenseModel $ExpenseModel;
+    public PartsModel $PartsModel;
+    public StatisticsModel $StatsModel;
 
     public function __construct()
     {
@@ -23,6 +25,12 @@ abstract class Controller
         $this->UserModel = new UserModel();
         $this->ExpenseModel = new ExpenseModel();
         $this->PartsModel = new PartsModel();
+        $this->StatsModel = new StatisticsModel();
+    }
+
+    public function indexAction()
+    {
+        $this->returnError('Incorrect path');
     }
 
     public function checkPost($post)

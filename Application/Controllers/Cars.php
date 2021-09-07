@@ -7,6 +7,38 @@ use Core\Controller;
 //TODO implement Controller
 class Cars extends Controller
 {
+    public function getUserCarsAction()
+    {
+        /** Status codes
+         * 0 -> success
+         * 1 -> missing data
+         * 2 -> no cars
+         */
+//        xdebug_break();
+        $data = $this->initialData();
+        $response = [];
+        if (!empty($data['id'])) {
+//            $userCars = $this->CarModel->listCarsByUserId($data['id']);
+            $userCars = $this->CarModel->listCarsByUserId($data['id']);
+            if (!empty($userCars) && count($userCars) > 0 ) {
+                $response = [
+                    'status' => 0,
+                    'success' => true,
+                    'cars' => $userCars
+                ];
+                echo json_encode($response);
+                die();
+            }
+            $response = [
+                'success' => false,
+                'status' => 2,
+            ];
+            echo json_encode($response);
+        }
+
+        $this->returnError('General error', 1);
+    }
+
     public function processAction()
     {
 //        if (!empty($_POST)) {

@@ -11,8 +11,9 @@ class Account extends Controller
     {
 //        xdebug_break();
         /** Statuses
-         * 0 - missing data
-         * 1 - incorrect username/password
+         * 0 - success
+         * 1 - missing data
+         * 2 - incorrect username/password
          */
 
         $data = $this->initialData();
@@ -31,9 +32,9 @@ class Account extends Controller
                 echo json_encode($response);
                 die();
             }
-            $this->returnError('Incorrect username or password', 1);
+            $this->returnError('Incorrect username or password', 2);
         } else {
-            $this->returnError('Incorrect data provided', 0);
+            $this->returnError('Incorrect data provided', 1);
         }
         die();
     }

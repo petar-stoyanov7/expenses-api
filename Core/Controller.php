@@ -84,7 +84,7 @@ abstract class Controller
         return $data;
     }
 
-    protected function returnError($error = 'Access denied', $errorCode = 0)
+    protected function returnError($error = 'Access denied', $errorCode = 2)
     {
         echo json_encode([
             'success' => false,

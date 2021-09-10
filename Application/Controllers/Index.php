@@ -2,13 +2,13 @@
 
 namespace Application\Controllers;
 
-use \Core\View;
-use \Application\Models\CarModel;
-use \Application\Models\ExpenseModel;
-use \Application\Models\StatisticsModel;
+use Core\Controller;
 
 //TODO implement Controller, check how we use it
-class Index
+class Index extends Controller
 {
-    //placeholder
+    public function indexAction()
+    {
+        $this->returnError('Invalid path');
+    }
 }

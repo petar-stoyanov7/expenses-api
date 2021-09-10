@@ -84,11 +84,11 @@ abstract class Controller
         return $data;
     }
 
-    protected function returnError($error = 'Access denied', $errorCode = 2)
+    protected function returnError($error = 'Access denied', $statusCode = 1)
     {
         echo json_encode([
             'success' => false,
-            'status' => $errorCode,
+            'status' => $statusCode,
             'message' => $error
         ], JSON_THROW_ON_ERROR);
         die();

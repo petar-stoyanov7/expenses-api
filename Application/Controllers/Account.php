@@ -15,7 +15,6 @@ class Account extends Controller
          * 1 - missing data
          * 2 - incorrect username/password
          */
-
         $data = $this->initialData();
 
         if(isset($data['user'], $data['pass'])) {

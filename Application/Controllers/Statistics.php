@@ -7,6 +7,28 @@ use Core\Controller;
 class Statistics extends Controller
 {
 
+    public function getLastFiveAction()
+    {
+//        xdebug_break();
+        $data = $this->initialData();
+        print_r($data);
+        die();
+        if (!empty($data['carId'])) {
+            $result = $this->StatsModel->getLastN($data['userId'], 'car');
+        } else if (!empty($data['userId'])) {
+            $result = $this->StatsModel->getLastN($data['userId'], 'user');
+        } else {
+            $this->returnError('Invalid data provided', 1);
+            die();
+        }
+        echo json_encode([
+            'success' => true,
+            'status' => 1,
+            'data' => $result
+        ]);
+        die();
+    }
+
     public function indexAction()
     {
         //TODO Completely remove after implementing proper ajax listener

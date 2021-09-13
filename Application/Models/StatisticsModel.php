@@ -53,20 +53,20 @@ class StatisticsModel extends DbModelAbstract
 ___SQL;
         switch ($type) {
             case 'car':
-                $queryTemplate += <<<___SQL
+                $queryTemplate .= <<<___SQL
             WHERE `Expense_%y`.`CID`= ?
-            ORDER BY `Expense_%y`.`ID` DESC LIMIT 5;
+            ORDER BY `Expense_%y`.`ID` DESC LIMIT %l;
 ___SQL;
                 break;
             case 'user':
             default:
-            $queryTemplate += <<<___SQL
+            $queryTemplate .= <<<___SQL
             WHERE `Expense_%y`.`UID`= ?
-            ORDER BY `Expense_%y`.`ID` DESC LIMIT 5;
+            ORDER BY `Expense_%y`.`ID` DESC LIMIT %l;
 ___SQL;
         }
         while($limit > 0) {
-            $query = str_replace('%y',$year, $queryTemplate);
+            $query = str_replace(['%y', '%l'],[$year, $limit], $queryTemplate);
             $array = $this->getData($query, [$id]);
             $result = array_merge($result, $array);
             $limit -= count($array);

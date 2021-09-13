@@ -9,14 +9,12 @@ class Statistics extends Controller
 
     public function getLastFiveAction()
     {
-//        xdebug_break();
+        xdebug_break();
         $data = $this->initialData();
-        print_r($data);
-        die();
         if (!empty($data['carId'])) {
             $result = $this->StatsModel->getLastN($data['userId'], 'car');
         } else if (!empty($data['userId'])) {
-            $result = $this->StatsModel->getLastN($data['userId'], 'user');
+            $result = $this->StatsModel->getLastN($data['userId']);
         } else {
             $this->returnError('Invalid data provided', 1);
             die();

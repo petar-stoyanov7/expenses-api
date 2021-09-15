@@ -49,24 +49,22 @@ __SQL;
         $_SESSION['user'] = $array;
     }
 
-    public function addUser($User)
+    public function addUser($userArray)
     {
-        $users = $this->listUsers();
         $query = "INSERT INTO `Users` (`Username`,`Password`,`Group`,`Email`,`Fname`,`Lname`,`City`,`Sex`,`Notes`)
                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $values = [
-            $User->getProperty("username"),
-            password_hash($User->getProperty("password1"), PASSWORD_DEFAULT),
-            $User->getProperty("group"),
-            $User->getProperty("email1"),
-            $User->getProperty("fname"),
-            $User->getProperty("lname"),
-            $User->getProperty("city"),
-            $User->getProperty("sex"),
-            $User->getProperty("notes"),
+            $userArray["username"],
+            password_hash($userArray["password"], PASSWORD_DEFAULT),
+            $userArray["group"],
+            $userArray["email"],
+            $userArray["firstName"],
+            $userArray["lastName"],
+            $userArray["city"],
+            $userArray["gender"],
+            $userArray["notes"],
         ];
-        $this->execute($query, $values);
-        return true;
+        return $this->execute($query, $values);
     }
 
     public function editUser($user, $post, $adminEdit = false)

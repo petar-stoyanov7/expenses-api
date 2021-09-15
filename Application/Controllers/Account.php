@@ -9,7 +9,6 @@ class Account extends Controller
 {
     public function loginAction()
     {
-//        xdebug_break();
         /** Statuses
          * 0 - success
          * 1 - missing data
@@ -77,29 +76,37 @@ class Account extends Controller
 
     public function registerAction()
     {
-//        $form = new UserForm();
-//        if(!empty($_POST)) {
-//            $values = $form->getValues();
-//            $user = new User(
-//                $_POST['username'],
-//                $_POST['password1'],
-//                $_POST['password2'],
-//                $_POST['email1'],
-//                $_POST['email2'],
-//                $_POST['firstname'],
-//                $_POST['lastname'],
-//                $_POST['city'],
-//                $_POST['sex']
-//            );
-//            if ($this->UserModel->addUser($user)) {
-//                $this->UserModel->login($user);
-//                header('Location: /');
-//            };
-//
-//
-//        } else {
-//            echo json_encode($this->_generateError('No data provided'));
-//        }
+        /** Statuses
+         * 0 - success
+         * 1 - missing data
+         * 2 - username exists
+         * 3 - email exists
+         */
+        xdebug_break();
+        $data = $this->initialData();
+        if (!empty($data)) {
+            $users = $this->UserModel->listUsers();
+            foreach ($users as $user) {
+                if ($user['Username'] === $data['username']) {
+                    $this->returnError('Username exists', 2);
+                }
+                if ($user['Email'] === $data['email']) {
+                    $this->returnError('Email exists', 3);
+                }
+            }
+            if ($this->UserModel->addUser($data)) {
+                $user = $this->UserModel->login($data['username'], $data['password']);
+                if ($user) {
+                    $response = [
+                        'success' => true,
+                        'user' => $user,
+                    ];
+                    echo json_encode($response);
+                    die();
+                }
+            }
+        }
+        $this->returnError('Missing data');
     }
 
     public function profileAction()

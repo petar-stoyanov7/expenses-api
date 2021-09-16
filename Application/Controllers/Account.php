@@ -55,25 +55,6 @@ class Account extends Controller
         $this->returnError('Invalid user');
     }
 
-    public function getHomepageDataAction()
-    {
-        $data = $this->initialData();
-        if (isset($data['id'])) {
-            $user = $this->UserModel->getUserByUserId($data['id']);
-            if (empty($user)) {
-                $this->returnError('Invalid user');
-            }
-            //
-            $response = [
-                'success' => true,
-                'user' => $user
-            ];
-            echo json_encode($response);
-            die();
-        }
-        $this->returnError('Invalid user');
-    }
-
     public function registerAction()
     {
         /** Statuses

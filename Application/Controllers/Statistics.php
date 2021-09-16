@@ -25,6 +25,24 @@ class Statistics extends Controller
         $this->returnError('Invalid data provided', 1);
     }
 
+    public function getOverallAction()
+    {
+//        xdebug_break();
+        $data = $this->initialData();
+        if (!empty($data['userId'])) {
+            $sum = $this->StatsModel->getOverallForPeriod($data['start'], $data['end'], $data['userId'], $data['carId']);
+            $result = [
+                'success' => true,
+                'status' => 0,
+                'sum' => $sum
+            ];
+            echo json_encode($result);
+            die();
+        } else {
+            $this->returnError('No data provided');
+        }
+    }
+
     public function indexAction()
     {
         //TODO Completely remove after implementing proper ajax listener

@@ -126,25 +126,46 @@ ___SQL;
         return $this->getData($query, $params);
     }
 
-    public function getOverallForPeriod($start, $end, $userId, $carId, $expenseId) {
-        if ($carId === "all") {
-            $cars = $this->carModel->listCarsByUserId($userId);
-        } else {
-            $cars[] = $this->carModel->getCarById($carId);
-        }
-        $result = [];
-        foreach ($cars as $car) {
-            $data = $this->getCarOverallForPeriod(
-                $start,
-                $end,
-                $userId,
-                $car['ID'],
-                $expenseId
-            );
-            $result[$car['ID']] = array_merge($data, $car);
+    public function getOverallForPeriod($start, $end, $userId, $carId) {
+        $price = 0;
+        $queryTemplate = <<<SQL
+            SELECT sum(`Price`) as `Price`
+            FROM `Expense_%y`
+            WHERE `UID` = ?
+SQL;
+
+        $queryParams = [$userId];
+
+        if (!empty($carId)) {
+            if (is_array($carId)) {
+                $queryTemplate .= <<<SQL
+                AND `CID` in ?
+SQL;
+            } else {
+                $queryTemplate .= <<<SQL
+                AND `CID` = ?
+SQL;
+            }
+            $queryParams[] = $carId;
         }
 
-        return $result;
+        $startYear = date("Y", strtotime($start));
+        $endYear = date("Y", strtotime($end));
+
+        if ($startYear === $endYear) {
+            $query = str_replace('%y', $startYear, $queryTemplate);
+            $result = $this->getData($query, $queryParams);
+            $price += $result[0]['Price'];
+        } else {
+            while($startYear <= $endYear) {
+                $query = str_replace('%y', $startYear, $queryTemplate);
+                $result = $this->getData($query, $queryParams);
+                $price += $result[0]['Price'];
+                $startYear++;
+            }
+        }
+
+        return empty($price) ? 0 : $price;
     }
 
     public function getCarOverallForPeriod($start, $end, $userId, $carId, $expenseId) {

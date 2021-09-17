@@ -39,6 +39,20 @@ class Cars extends Controller
         $this->returnError('General error', 1);
     }
 
+    public function getFuelListAction()
+    {
+//        xdebug_break();
+        $this->initialData();
+        $fuelList = $this->CarModel->getFuelList();
+        $result = [
+            'success' => true,
+            'status' => 0,
+            'fuels' => $fuelList
+        ];
+        echo json_encode($result);
+        die();
+    }
+
     public function processAction()
     {
 //        if (!empty($_POST)) {

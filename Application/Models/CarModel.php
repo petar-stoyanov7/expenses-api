@@ -64,13 +64,15 @@ __SQL;
         return $fuel_array;
     }
 
-    public function getUserIdByCarId($cid) {
+    public function getUserIdByCarId($cid)
+    {
         $query = "SELECT `UID` FROM `Cars` WHERE `ID` = ? LIMIT 1";
         $data = $this->getData($query, [$cid]);
         return $data[0]['UID'];
     }
 
-    public function getFuels($secondary = null) {
+    public function getFuels($secondary = null)
+    {
         $query = "SELECT * FROM `Fuel_Types`";
         if (null !== $secondary) {
             $query .= " WHERE `ID` NOT IN (1,2)";
@@ -78,7 +80,8 @@ __SQL;
         return $this->getData($query);
     }
     
-    public function getFuelName($id) {
+    public function getFuelName($id)
+    {
         if (null === $id) {
             return null;
         }
@@ -87,7 +90,8 @@ __SQL;
         return $result[0]['NAME'];
     }
 
-    public function getCarById($id) {
+    public function getCarById($id)
+    {
         $query = <<<__SQL
             SELECT
             c.*,
@@ -104,13 +108,20 @@ __SQL;
         return $car_array[0];
     }
 
-    public function getCarNameById($id) {
+    public function getCarNameById($id)
+    {
         $car_array = $this->getData("SELECT * FROM `Cars` WHERE `ID` = ?",[$id]);
         $string = $car_array[0]['Brand']." ".$car_array[0]['Model'];
         return $string;
     }
 
-    public function getFuelNames() {
+    public function getFuelList()
+    {
+        return $this->getData("SELECT * FROM `Fuel_Types`");
+    }
+
+    public function getFuelNames()
+    {
         $fuels_list = $this->getData("SELECT `Name` FROM `Fuel_Types`");
         $fuels_array = array();
         foreach ($fuels_list as $fuel) {
@@ -119,7 +130,8 @@ __SQL;
         return $fuels_array;
     }
 
-    public function getFuelId() {
+    public function getFuelId()
+    {
         $fuels_list = $this->getData("SELECT `ID` FROM `Fuel_Types`");
         $fuels_array = array();
         foreach ($fuels_list as $fuel) {
@@ -134,7 +146,8 @@ __SQL;
         return $this->getData($query, [$carId]);
     }
     
-    public function addCar($car) {
+    public function addCar($car)
+    {
         $query = "INSERT INTO `Cars` 
             (`UID`, `Brand`, `Model`, `Year`, `Color`, `Mileage`, `Fuel_ID`, `Fuel_ID2`, `Notes`)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -152,7 +165,8 @@ __SQL;
         return $this->execute($query, $values);
     }
 
-    public function editCar($car, $cid) {
+    public function editCar($car, $cid)
+    {
         $query = "UPDATE `Cars` SET 
                     `Brand` = ?,
                     `Model` = ?,

@@ -65,12 +65,8 @@ class ExpenseModel extends DbModelAbstract
     //might delete this
     public function getExpenseNames()
     {
-        $expenseList = $this->getData("SELECT `Name` FROM `Expense_Types`");
-        $expenseArray = array();
-        foreach ($expenseList as $expense) {
-            array_push($expenseArray, $expense['Name']);
-        }
-        return $expenseArray;
+        $expenseArray = [];
+        return $this->getData("SELECT * FROM `Expense_Types`");
     }
     //might delete this
     public function getExpenseId()

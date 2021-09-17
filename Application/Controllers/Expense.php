@@ -10,6 +10,20 @@ use Exception;
 class Expense extends Controller
 {
 
+    public function getExpensesAction()
+    {
+//        xdebug_break();
+        $data = $this->initialData();
+        $expenses = $this->ExpenseModel->getExpenseNames();
+        $result = [
+            'success' => true,
+            'status' => 0,
+            'expenses' => $expenses
+        ];
+        echo json_encode($result);
+        die();
+    }
+
     public function removeAction()
     {
 //        $result['success'] = false;

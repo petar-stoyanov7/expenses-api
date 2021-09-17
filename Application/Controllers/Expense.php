@@ -24,6 +24,21 @@ class Expense extends Controller
         die();
     }
 
+
+    public function getInsurancesAction()
+    {
+//        xdebug_break();
+        $this->initialData();
+        $insuranceList = $this->ExpenseModel->getInsuranceList();
+        $result = [
+            'success' => true,
+            'status' => 0,
+            'insurances' => $insuranceList
+        ];
+        echo json_encode($result);
+        die();
+    }
+
     public function removeAction()
     {
 //        $result['success'] = false;

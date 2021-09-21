@@ -15,13 +15,7 @@ class Expense extends Controller
 //        xdebug_break();
         $data = $this->initialData();
         $expenses = $this->ExpenseModel->getExpenseNames();
-        $result = [
-            'success' => true,
-            'status' => 0,
-            'expenses' => $expenses
-        ];
-        echo json_encode($result);
-        die();
+        $this->returnData(['expenses' => $expenses]);
     }
 
 
@@ -30,13 +24,34 @@ class Expense extends Controller
 //        xdebug_break();
         $this->initialData();
         $insuranceList = $this->ExpenseModel->getInsuranceList();
-        $result = [
-            'success' => true,
-            'status' => 0,
-            'insurances' => $insuranceList
-        ];
-        echo json_encode($result);
-        die();
+        $this->returnData(['insurances' => $insuranceList]);
+    }
+
+    public function newExpenseAction()
+    {
+        xdebug_break();
+        $data = $this->initialData();
+
+        $Expense = new \Application\Classes\Expense(
+            $data['userId'],
+            $data['carId'],
+            $data['date'],
+            $data['mileage'],
+            $data['expenseType'],
+            $data['value'],
+            $data['fuelType'],
+            $data['liters'],
+            $data['insuranceType'],
+            $data['partName'],
+            $data['description']
+        );
+        try {
+            $expenseId = $this->ExpenseModel->addExpense($Expense);
+
+            $this->returnData(['expenseId' => $expenseId]);
+        } catch (Exception $e) {
+            $this->returnError('Incorrect data', 1);
+        }
     }
 
     public function removeAction()
@@ -54,71 +69,4 @@ class Expense extends Controller
 //        die();
     }
 
-    public function newAjaxExpenseAction()
-    {
-//        $response['success'] = false;
-//        $newPart = false;
-//        if (!empty($_POST)) {
-//            $values = nullify($_POST);
-//            $type = (int)$values['expenseType'];
-//            switch($type) {
-//                case 1:
-//                    $values['insuranceType'] = null;
-//                    $values['partName'] = null;
-//                    unset($values['replacementParts']);
-//                    break;
-//                case 2:
-//                    $values['fuelType'] = null;
-//                    $values['liters'] = null;
-//                    $values['partName'] = null;
-//                    unset($values['replacementParts']);
-//                    break;
-//                case 5:
-//                    $newPart = true;
-//                    $values['insuranceType'] = null;
-//                    $values['fuelType'] = null;
-//                    $values['liters'] = null;
-//                    break;
-//                default:
-//                    $values['insuranceType'] = null;
-//                    $values['fuelType'] = null;
-//                    $values['liters'] = null;
-//                    $values['partName'] = null;
-//                    unset($values['replacementParts']);
-//                    break;
-//            }
-//            $values['description'] = null === $values['description'] ? '' : $values['description'];
-//            $Expense = new ExpenseClass(
-//                $values['userId'],
-//                $values['carId'],
-//                $values['date'],
-//                $values['mileage'],
-//                $values['expenseType'],
-//                $values['value'],
-//                $values['fuelType'],
-//                $values['liters'],
-//                $values['insuranceType'],
-//                $values['partName'],
-//                $values['description']
-//            );
-//            try {
-//                $expenseId = $this->ExpenseModel->addExpense($Expense);
-//                $response['success'] = true;
-//            } catch (Exception $e) {
-//                $response = [
-//                    'success' => false,
-//                    'message' => $e->getMessage()
-//                ];
-//            }
-//            if ($newPart && !empty($expenseId)) {
-//                $this->PartsModel->addNewParts($Expense, $expenseId);
-//                if (!empty($values['replacementParts'])) {
-//                    $this->PartsModel->removeParts($values['replacementParts']);
-//                }
-//            }
-//
-//        }
-//        echo json_encode($response);
-//        die();
-    }
 }

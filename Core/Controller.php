@@ -93,4 +93,14 @@ abstract class Controller
         ], JSON_THROW_ON_ERROR);
         die();
     }
+
+    protected function returnData(Array $dataArray)
+    {
+        $result = array_merge($dataArray, [
+            'success' => true,
+            'status' => 0,
+        ]);
+        echo json_encode($result);
+        die();
+    }
 }
